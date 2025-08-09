@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
@@ -14,7 +15,6 @@ class User extends Authenticatable
 
     /**
      * The attributes that are mass assignable.
-     *
      * @var list<string>
      */
     protected $fillable = [
@@ -25,7 +25,6 @@ class User extends Authenticatable
 
     /**
      * The attributes that should be hidden for serialization.
-     *
      * @var list<string>
      */
     protected $hidden = [
@@ -44,5 +43,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function ownerMarkets(): HasMany
+    {
+        return $this->hasMany(Market::class, 'created_by');
+    }
+
+    public function cpCreator(): HasMany
+    {
+        return $this->hasMany(CardProduct::class, 'created_by');
+    }
+
+    public function cpEditor(): HasMany
+    {
+        return $this->hasMany(CardProduct::class, 'modified_by');
     }
 }
