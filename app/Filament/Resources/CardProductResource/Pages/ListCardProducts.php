@@ -10,6 +10,7 @@ use Filament\Tables\Filters\Filter;
 use Filament\Resources\Components\Tab;
 use Filament\Tables\Columns\TextColumn;
 use App\Enum\CardProduct\CardStatusEnum;
+use Filament\Tables\Columns\ImageColumn;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
@@ -75,6 +76,13 @@ class ListCardProducts extends ListRecords
     public function table(Table $table): Table
     {
         return $table->columns([
+                ImageColumn::make('preview')
+                    ->label('превью')
+                    ->getStateUsing(function ($record) {
+                        return $record->getFirstMediaUrl('preview');
+                    })
+                    ->circular()
+                    ->toggleable(),
                 TextColumn::make('category.name')
                     ->numeric(),
                 TextColumn::make('name')

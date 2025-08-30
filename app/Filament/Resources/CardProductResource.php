@@ -3,7 +3,6 @@
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\CardProductResource\Pages;
-use App\Filament\Resources\CardProductResource\RelationManagers;
 use App\Filament\Resources\CardProductResource\RelationManagers\DimensionRelationManager;
 use App\Filament\Resources\CardProductResource\RelationManagers\PricingRelationManager;
 use App\Models\CardProduct;
@@ -28,9 +27,9 @@ class CardProductResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCardProducts::route('/'),
+            'index'  => Pages\ListCardProducts::route('/'),
             'create' => Pages\CreateCardProduct::route('/create'),
-            'edit' => Pages\EditCardProduct::route('/{record}/edit'),
+            'edit'   => Pages\EditCardProduct::route('/{record}/edit'),
         ];
     }
 }

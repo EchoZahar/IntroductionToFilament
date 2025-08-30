@@ -2,12 +2,15 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Enum\CardProduct\CardStatusEnum;
 use App\Enum\CardProduct\MultiplicityEnum;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 /**
  * @property integer $portal_nomenclature_id
@@ -28,9 +31,9 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
  * @property integer $created_by
  * @property integer $modified_by
  */
-class CardProduct extends Model
+class CardProduct extends Model implements HasMedia
 {
-    use SoftDeletes;
+    use SoftDeletes, InteractsWithMedia;
 
     public $table = 'card_products';
 
@@ -41,6 +44,24 @@ class CardProduct extends Model
         'status'        => CardStatusEnum::class,
         'errors_or_exceptions' => 'array',
     ];
+
+    public function registerMediaConversions(?Media $media = null): void
+    {
+        // Конвертация full HD 1920 * 1080
+        $kb = round(($media->size / 1024), 2);
+        if ($kb > 1024) {
+            $this->addMediaConversion('hd')
+                ->optimize()
+                ->queued();
+        } else {
+            $this->addMediaConversion('hd')->nonQueued();
+        }
+        // миниатюра 250 * 250
+        $this->addMediaConversion('thumb')
+            ->width(250)
+            ->height(250)
+            ->queued();
+    }
 
     public function category(): BelongsTo
     {

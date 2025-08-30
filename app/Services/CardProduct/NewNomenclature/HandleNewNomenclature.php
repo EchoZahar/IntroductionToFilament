@@ -5,13 +5,13 @@ namespace App\Services\CardProduct\NewNomenclature;
 use App\Models\ChCategory;
 use App\Models\CardProduct;
 use App\Models\CardProductPricing;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Models\CardProductDimensions;
 use App\Enum\CardProduct\CardStatusEnum;
 use App\Enum\CardProduct\MultiplicityEnum;
 use App\Traits\CardProduct\DimensionConverter\CardConverter;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class HandleNewNomenclature
 {
