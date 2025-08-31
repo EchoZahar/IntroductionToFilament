@@ -22,7 +22,7 @@ class GetChCategoryListCommand extends Command
 
     private function handleChCategories(): void
     {
-        $chCategoryList = new GetChCategoryListMethod()->method();
+        $chCategoryList = (new GetChCategoryListMethod())->method();
         if (isset($chCategoryList->response)) {
             foreach ($chCategoryList->response as $item) {
                 $portalCategory = ChPortalCategory::query()->where('ch_category_id', '=', $item->id)->first();
@@ -44,7 +44,7 @@ class GetChCategoryListCommand extends Command
 
     private function handleChPortalCategories()
     {
-        $chPortalCategoryList = new GetChCategoryPortalListMethod()->method();
+        $chPortalCategoryList = (new GetChCategoryPortalListMethod())->method();
         if (isset($chPortalCategoryList->response)) {
             array_map(function ($portalCategory) {
                 if (!is_null($portalCategory->local_category_id)) {
