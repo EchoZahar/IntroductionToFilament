@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\CardProductResource\RelationManagers;
 
+use App\Services\CardProduct\Dimension\DimensionDataService;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -9,6 +10,7 @@ use Filament\Tables;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 
 class DimensionRelationManager extends RelationManager
 {
@@ -23,7 +25,8 @@ class DimensionRelationManager extends RelationManager
                 TextInput::make('height')->required()->numeric(),
                 TextInput::make('net_weight')->required()->numeric(),
                 TextInput::make('gross_weight')->required()->numeric(),
-            ])->columns('full');
+            ])
+            ->columns('full');
     }
 
     public function table(Table $table): Table
@@ -43,11 +46,12 @@ class DimensionRelationManager extends RelationManager
                 TextColumn::make('volume_weight')->numeric(),
                 ToggleColumn::make('is_kgt')
             ])
-            ->filters([
-                //
-            ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()
+                    ->after(function (array $data, $record): void {
+                        $user = Auth::user();
+                        app(DimensionDataService::class)->processData($data, $record, $user);
+                    }),
             ]);
     }
 }

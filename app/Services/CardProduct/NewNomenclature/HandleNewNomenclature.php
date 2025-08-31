@@ -5,7 +5,7 @@ namespace App\Services\CardProduct\NewNomenclature;
 use App\Models\ChCategory;
 use App\Models\CardProduct;
 use App\Models\CardProductPricing;
-use App\Models\CardProductDimensions;
+use App\Models\CardProductDimension;
 use App\Enum\CardProduct\CardStatusEnum;
 use App\Enum\CardProduct\MultiplicityEnum;
 use App\Traits\CardProduct\DimensionConverter\CardConverter;
@@ -54,7 +54,7 @@ class HandleNewNomenclature
                 $newCard = CardProduct::query()->create($card);
                 if ($newCard) {
                     $dimensions['card_product_id'] = $newCard->id;
-                    CardProductDimensions::query()->create($dimensions);
+                    CardProductDimension::query()->create($dimensions);
 
                     $pricing['card_product_id'] = $newCard->id;
                     CardProductPricing::query()->create($pricing);

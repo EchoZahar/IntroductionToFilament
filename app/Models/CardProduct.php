@@ -80,7 +80,7 @@ class CardProduct extends Model implements HasMedia
 
     public function dimension(): HasOne
     {
-        return $this->hasOne(CardProductDimensions::class, 'card_product_id');
+        return $this->hasOne(CardProductDimension::class, 'card_product_id');
     }
 
     public function pricing(): HasOne
